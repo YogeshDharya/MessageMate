@@ -17,7 +17,7 @@ type Message struct{
 
 var db *sql.DB
 
-func init(){
+func init() {
 	dbQuery := `
 	CREATE TABLE IF NOT EXISTS Messages(
 	id INT AUTO_INCREMENT PRIMARY KEY,
@@ -33,29 +33,26 @@ func init(){
 	viper.BindEnv("DB_HOST")	
 	viper.BindEnv("DB_USER")	
 	viper.BindEnv("DB_PASSWORD")	
-	viper.BindEnv("DB")
-	viper.BindEnv("FIBER_PORT")	
+	viper.BindEnv("DB")	
 	if err := viper.ReadInConfig() ; err != nil{
 		panic("Error Reading The .env file ! 🔺 Log -> " + err.Error())
 	}
 }
 
 func main(){
-	fmt.Print("Hey There ! I am Message Mate ! ")
+	fmt.Print("Hey There 🧑‍🦳 Its me Message Mate 🧒 Share Me A message  🥇")
 	dsn := fmt.Sprintf("%s:%s@tcp(%s)/%s",
 	viper.GetString("DB_HOST"),
 	viper.GetString("DB_USER"),
 	viper.GetString("DB_PASSWORD"),
-	viper.GetString("DB")
+	viper.GetString("DB_NAME"),
 	)
-	port := viper.GetString("FIBER_PORT")
 	var err error 
 	db , err = sql.Open("mysql",dsn)
 	if err != nil {
 		log.Fatal(" 🔺 Error Establishing Database Connection -> ", err)
 	}
 	defer db.Close()
-	init()
 	app := fiber.New()
 	app.Get("/", func(c *fiber.Ctx) error {
         rows, err := db.Query("SELECT id, message FROM messages")
@@ -88,7 +85,7 @@ func main(){
     })
 
     // Start the Fiber app
-    log.Fatal(app.Listen(fmt.Sprintf(":%s",port)))
+    log.Fatal(app.Listen(fmt.Sprintf(":%s",3000)))
 }
 
 
